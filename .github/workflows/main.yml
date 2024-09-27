@@ -1,0 +1,9 @@
+name: buildbot
+
+on:
+  pull_request:
+
+jobs:
+  buildbot:
+    uses: ./.github/workflows/build.yml
+    secrets: inherit
