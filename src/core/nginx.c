@@ -465,9 +465,9 @@ ngx_add_inherited_sockets(ngx_cycle_t *cycle)
 
     inherited = (u_char *) getenv(NGINX_VAR);
 
-        if (inherited == NULL) {
-            return NGX_OK;
-        }
+    if (inherited == NULL) {
+        return NGX_OK
+    }
 
     ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0,
                   "using inherited sockets from \"%s\"", inherited);
