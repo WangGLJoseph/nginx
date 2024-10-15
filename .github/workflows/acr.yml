@@ -27,4 +27,4 @@ jobs:
           PROJECT_SECRET: ${{ secrets.PROJECT_SECRET }}
         run: |
           cat error.log
-          curl --header "acr-auth-token: $ACR_TOKEN" --insecure -d '{"agent" : "GitHub Action", "project_secret": "$PROJECT_SECRET", "language": "c", "description": "'" $(echo $(cat error.log)) "'", "type": "bug fix" , "branch": "${{ github.head_ref }}", "commit": "${{ github.head_ref }}" }' -X POST "$ACR_HOST/ci/github/run"
+          curl --header "acr-auth-token: $ACR_TOKEN" --insecure -d '{"agent" : "GitHub Action", "project_secret": "'"$PROJECT_SECRET"'", "language": "c", "description": "'" $(echo $(cat error.log)) "'", "type": "bug fix" , "branch": "${{ github.head_ref }}", "commit": "${{ github.head_ref }}" }' -X POST "$ACR_HOST/ci/github/run"
