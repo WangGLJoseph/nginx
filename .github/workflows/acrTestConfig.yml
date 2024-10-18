@@ -1,0 +1,20 @@
+name: AutoCodeRover
+on:
+  workflow_call:
+
+jobs:
+  test_config:
+    name: Test Config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Config
+        uses: actions/checkout@v2
+      - shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACR_TOKEN: ${{ secrets.ACR_TOKEN }}
+          ACR_HOST: ${{ secrets.ACR_HOST }}
+          PROJECT_SECRET: ${{ secrets.PROJECT_SECRET }}
+        run: |
+          curl --header "acr-auth-token: $ACR_TOKEN" --insecure -d '{"agent" : "GitHub Action", "project_secret": "'"$PROJECT_SECRET"'", "language": "c", "description": "testing github actions config", "type": "bug fix" , "branch": "${{ github.head_ref }}", "commit": "${{ github.head_ref }}" }' -X POST "$ACR_HOST/ci/github/test-config"
+                
