@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  build-and-test-and-analyze:
+  build-and-test:
     runs-on: ubuntu-latest
     env:
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
@@ -99,21 +99,7 @@ jobs:
         with:
           name: error_log
           path: error.log
-#      - name: Run sonar-scanner
-#        id: analysis
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-#        run: |
-#          sonar-scanner --define sonar.cfamily.compile-commands="${{ env.BUILD_WRAPPER_OUT_DIR }}/compile_commands.json" > error.log 2>&1
-#          cat error.log
-#
-#      - name: Upload Sonar Log
-#        if: ${{ failure() && steps.analysis.outcome == 'failure'}}
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: error_log
-#          path: error.log
+
       - name: Test
         id: test
         working-directory: nginx-tests
@@ -133,9 +119,9 @@ jobs:
 
 
   repair:
-      needs: build-and-test-and-analyze
+      needs: build-and-test # this is the name of any prerequisite jobs that generate the error.log artifact
       if: failure()
-      uses: ./.github/workflows/acr.yml
+      uses: ./.github/workflows/acr.yml # this is the workflow file containing the call to AutoCodeRover's API with error.log as an input
       secrets: inherit
       with:
         artifact: error_log
