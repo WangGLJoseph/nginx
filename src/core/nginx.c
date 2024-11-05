@@ -848,11 +848,19 @@ ngx_get_options(int argc, char *const *argv)
             case 'p':
                 if (*p) {
                     ngx_prefix = p;
+                    if (ngx_strlen(ngx_prefix) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-p\" directory name too long");
+                        return NGX_ERROR;
+                    }
                     goto next;
                 }
 
                 if (argv[++i]) {
                     ngx_prefix = (u_char *) argv[i];
+                    if (ngx_strlen(ngx_prefix) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-p\" directory name too long");
+                        return NGX_ERROR;
+                    }
                     goto next;
                 }
 
@@ -862,10 +870,17 @@ ngx_get_options(int argc, char *const *argv)
             case 'e':
                 if (*p) {
                     ngx_error_log = p;
+                    if (ngx_strlen(ngx_error_log) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-e\" file name too long");
+                        return NGX_ERROR;
+                    }
 
                 } else if (argv[++i]) {
                     ngx_error_log = (u_char *) argv[i];
-
+                    if (ngx_strlen(ngx_error_log) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-e\" file name too long");
+                        return NGX_ERROR;
+                    }
                 } else {
                     ngx_log_stderr(0, "option \"-e\" requires file name");
                     return NGX_ERROR;
@@ -880,11 +895,19 @@ ngx_get_options(int argc, char *const *argv)
             case 'c':
                 if (*p) {
                     ngx_conf_file = p;
+                    if (ngx_strlen(ngx_conf_file) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-c\" file name too long");
+                        return NGX_ERROR;
+                    }
                     goto next;
                 }
 
                 if (argv[++i]) {
                     ngx_conf_file = (u_char *) argv[i];
+                    if (ngx_strlen(ngx_conf_file) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-c\" file name too long");
+                        return NGX_ERROR;
+                    }
                     goto next;
                 }
 
@@ -894,11 +917,19 @@ ngx_get_options(int argc, char *const *argv)
             case 'g':
                 if (*p) {
                     ngx_conf_params = p;
+                    if (ngx_strlen(ngx_conf_params) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-g\" parameter too long");
+                        return NGX_ERROR;
+                    }
                     goto next;
                 }
 
                 if (argv[++i]) {
                     ngx_conf_params = (u_char *) argv[i];
+                    if (ngx_strlen(ngx_conf_params) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-g\" parameter too long");
+                        return NGX_ERROR;
+                    }
                     goto next;
                 }
 
@@ -908,9 +939,17 @@ ngx_get_options(int argc, char *const *argv)
             case 's':
                 if (*p) {
                     ngx_signal = (char *) p;
+                    if (ngx_strlen(ngx_signal) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-s\" parameter too long");
+                        return NGX_ERROR;
+                    }
 
                 } else if (argv[++i]) {
                     ngx_signal = argv[i];
+                    if (ngx_strlen(ngx_signal) >= NGX_MAX_PATH) {
+                        ngx_log_stderr(0, "option \"-s\" parameter too long");
+                        return NGX_ERROR;
+                    }
 
                 } else {
                     ngx_log_stderr(0, "option \"-s\" requires parameter");
