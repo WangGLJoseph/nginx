@@ -29,5 +29,5 @@ jobs:
           JOB_SECRET: ${{ secrets.JOB_SECRET }}
         run: |
           cat error.log
-          curl --header "acr-auth-token: $ACR_TOKEN" --insecure -d '{"agent" : "GitHub Action", "project_secret": "'"$PROJECT_SECRET"'", "job_secret": "'"$JOB_SECRET"'", "branch": "${{ github.head_ref }}", "commit": "${{ github.head_ref }}" }' -X POST "$ACR_HOST/ci/github/run"
+          curl --header "acr-auth-token: $ACR_TOKEN" --insecure -d '{"agent" : "GitHub Action", "description": "'"$(echo $(cat error.log))"'", "project_secret": "'"$PROJECT_SECRET"'", "job_secret": "'"$JOB_SECRET"'", "branch": "${{ github.head_ref }}", "commit": "${{ github.head_ref }}" }' -X POST "$ACR_HOST/ci/github/run"
                 
