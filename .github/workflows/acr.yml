@@ -1,3 +1,4 @@
+
 name: AutoCodeRover
 on:
   workflow_call:
@@ -25,6 +26,8 @@ jobs:
           ACR_TOKEN: ${{ secrets.ACR_TOKEN }}
           ACR_HOST: ${{ secrets.ACR_HOST }}
           PROJECT_SECRET: ${{ secrets.PROJECT_SECRET }}
+          JOB_SECRET: ${{ secrets.JOB_SECRET }}
         run: |
           cat error.log
-          curl --header "acr-auth-token: $ACR_TOKEN" --insecure -d '{"agent" : "GitHub Action", "project_secret": "'"$PROJECT_SECRET"'", "language": "c", "description": "'" $(echo $(cat error.log)) "'", "type": "bug fix" , "branch": "${{ github.head_ref }}", "commit": "${{ github.head_ref }}" }' -X POST "$ACR_HOST/ci/github/run"
+          curl --header "acr-auth-token: $ACR_TOKEN" --insecure -d '{"agent" : "GitHub Action", "project_secret": "'"$PROJECT_SECRET"'", "job_secret": "'"$JOB_SECRET"'", "branch": "${{ github.head_ref }}", "commit": "${{ github.head_ref }}" }' -X POST "$ACR_HOST/ci/github/run"
+                
