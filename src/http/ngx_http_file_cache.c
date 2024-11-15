@@ -384,7 +384,10 @@ ngx_http_file_cache_open(ngx_http_request_t *r)
     c->length = of.size;
     c->fs_size = (of.fs_size + cache->bsize - 1) / cache->bsize;
 
-    c->buf = ngx_create_temp_buf(r->pool, c->body_start);
+    size_t max_buffer_size = 1024 * 1024; // 1MB limit for buffer size
+    size_t buffer_size = c->body_start > max_buffer_size ? max_buffer_size : c->body_start;
+
+    c->buf = ngx_create_temp_buf(r->pool, buffer_size);
     if (c->buf == NULL) {
         return NGX_ERROR;
     }
