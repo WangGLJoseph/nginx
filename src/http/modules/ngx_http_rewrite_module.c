@@ -686,7 +686,13 @@ ngx_http_rewrite_if_condition(ngx_conf_t *cf, ngx_http_rewrite_loc_conf_t *lcf)
 
     } else {
         value[last].len--;
-        value[last].data[value[last].len] = '\0';
+        if (value[last].len < NGX_MAX_CONF_ERRSTR) {
+            value[last].data[value[last].len] = '\0';
+        } else {
+            ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
+                               "condition too long \"%V\"", &value[last]);
+            return NGX_CONF_ERROR;
+        }
     }
 
     len = value[cur].len;
